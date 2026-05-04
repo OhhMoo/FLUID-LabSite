@@ -1,39 +1,31 @@
 import type { Metadata } from "next";
-import { DM_Sans, IBM_Plex_Sans_Condensed } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { SkipLink } from "@/components/SkipLink";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
 
-const dmSans = DM_Sans({
-  variable: "--ff-body",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
 
-const ibmPlexCondensed = IBM_Plex_Sans_Condensed({
-  variable: "--ff-label",
+const jbMono = JetBrains_Mono({
+  variable: "--font-jb-mono",
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Georgia Lyu",
-  description: "Product Designer & Design Engineer",
-  metadataBase: new URL("https://georgialyu.com"),
+  title: "fluid",
+  description:
+    "Statistical thermodynamics and computational chemistry of soft matter, with undergraduates at Harvey Mudd College.",
   openGraph: {
-    title: "Georgia Lyu",
-    description: "Product Designer & Design Engineer",
+    title: "fluid",
+    description:
+      "Statistical thermodynamics and computational chemistry of soft matter, with undergraduates at Harvey Mudd College.",
     type: "website",
-    url: "https://georgialyu.com",
-    images: ["/seo/cover-image.jpg"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Georgia Lyu",
-    description: "Product Designer & Design Engineer",
-    images: ["/seo/cover-image.jpg"],
-  },
-  icons: {
-    icon: "/seo/favicon.png",
   },
 };
 
@@ -43,8 +35,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${ibmPlexCondensed.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${inter.variable} ${jbMono.variable}`}>
+      <body>
+        <div className="page-backdrop" aria-hidden="true" />
+        <SkipLink />
+        <SiteHeader />
+        <main id="main" className="pt-16">
+          {children}
+        </main>
+        <SiteFooter />
+      </body>
     </html>
   );
 }
