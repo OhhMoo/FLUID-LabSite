@@ -17,8 +17,15 @@ const jbMono = JetBrains_Mono({
   display: "swap",
 });
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://ohhmoo.github.io/FLUID-LabSite";
+
 export const metadata: Metadata = {
-  title: "fluid",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "fluid",
+    template: "%s",
+  },
   description:
     "Statistical thermodynamics and computational chemistry of soft matter, with undergraduates at Harvey Mudd College.",
   openGraph: {
@@ -26,6 +33,14 @@ export const metadata: Metadata = {
     description:
       "Statistical thermodynamics and computational chemistry of soft matter, with undergraduates at Harvey Mudd College.",
     type: "website",
+    url: SITE_URL,
+    siteName: "fluid",
+  },
+  twitter: {
+    card: "summary",
+    title: "fluid",
+    description:
+      "Statistical thermodynamics and computational chemistry of soft matter, with undergraduates at Harvey Mudd College.",
   },
 };
 

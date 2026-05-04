@@ -1,11 +1,13 @@
 import Image from "next/image";
 import { pi, affiliations, awards } from "@/data/pi";
 import { Timeline } from "./Timeline";
-import { Reveal } from "./Reveal";
 
+// Hero / above-the-fold — rendered solid on first paint (no Reveal wrapper).
+// Wrapping in Reveal would cause an opacity-0 flash before hydration since
+// this is the landing card on / and /bilin.
 export function PIProfile() {
   return (
-    <Reveal as="article" className="surface-card p-6 sm:p-8">
+    <article className="surface-card p-6 sm:p-8">
       <h1 className="h1 mb-10 text-center">{pi.name}</h1>
 
       <div className="flex flex-col gap-8 lg:flex-row">
@@ -54,6 +56,6 @@ export function PIProfile() {
         <Timeline heading="Affiliations" rows={affiliations} />
         <Timeline heading="Awards & Recognition" rows={awards} />
       </div>
-    </Reveal>
+    </article>
   );
 }

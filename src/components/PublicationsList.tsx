@@ -44,13 +44,31 @@ export function PublicationsList({ publications }: Props) {
           </FilterChip>
         ))}
       </div>
-      <ol className="list-none">
-        {filtered.map((p) => (
-          <li key={p.id}>
-            <PublicationItem publication={p} />
-          </li>
-        ))}
-      </ol>
+      {filtered.length === 0 ? (
+        <p
+          role="status"
+          aria-live="polite"
+          className="border-t border-[color:var(--color-rule)] py-8 small text-[color:var(--color-ink-3)]"
+        >
+          No publications in {activeYear}.{" "}
+          <button
+            type="button"
+            onClick={() => setActiveYear(null)}
+            className="link-underline text-[color:var(--color-ink-2)]"
+          >
+            Show all
+          </button>
+          .
+        </p>
+      ) : (
+        <ol className="list-none">
+          {filtered.map((p) => (
+            <li key={p.id}>
+              <PublicationItem publication={p} />
+            </li>
+          ))}
+        </ol>
+      )}
     </div>
   );
 }
