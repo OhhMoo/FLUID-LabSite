@@ -31,22 +31,53 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-# TypeScript
+# TypeScript (auto-generated)
 *.tsbuildinfo
 next-env.d.ts
 
 # Vercel
 .vercel
 
-# Local settings (not project config)
-.claude/settings.local.json
-
-# User-specific skills (not part of the template)
-.claude/skills/customize/
-.claude/skills/release/
-
 # Local temp files
 temp/
 
-# Large media (regenerable via scripts/download-assets.mjs)
+# AI assistant configs (other tools / template artifacts)
+.aider.conf.yml
+.amazonq/
+.augment/
+.claude/
+.clinerules
+.codex/
+.continue/
+.cursor/
+.gemini/
+.opencode/
+.windsurf/
+.windsurfrules
+
+# Docker (unused — static export deploys to GitHub Pages)
+Dockerfile
+Dockerfile.dev
+docker-compose.yml
+.dockerignore
+
+# Template release artifacts
+CHANGELOG.md
+GEMINI.md
+
+# Template GitHub config (issue/PR templates, copilot, template CI)
+.github/ISSUE_TEMPLATE/
+.github/PULL_REQUEST_TEMPLATE.md
+.github/copilot-instructions.md
+.github/copilot-setup-steps.yml
+.github/skills/
+.github/workflows/ci.yml
+
+# Template clone-website docs + scripts (clone phase is over)
+docs/design-references/
+docs/research/INSPECTION_GUIDE.md
+scripts/
+
+# Empty placeholder directories
 public/videos/
+public/seo/
