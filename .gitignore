@@ -1,48 +1,86 @@
-# Dependencies
+# ============================================================
+# Dependencies / build artifacts
+# ============================================================
 node_modules/
 .pnp
 .pnp.js
-
-# Build
 .next/
 out/
 build/
 dist/
 
-# Environment
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# ============================================================
+# Lock files for non-npm package managers
+# ============================================================
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
 
-# Debug
+# ============================================================
+# Environment + secrets
+# ============================================================
+.env
+.env.*
+!.env.example
+
+# ============================================================
+# Logs
+# ============================================================
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+*.log
 
-# IDE
+# ============================================================
+# IDE / editor
+# ============================================================
 .idea/
 .vscode/
+.zed/
+.fleet/
 *.swp
 *.swo
+*.swn
+*~
+.history/
+*.code-workspace
 
+# ============================================================
 # OS
+# ============================================================
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
 
-# TypeScript (auto-generated)
+# ============================================================
+# TypeScript / Next.js auto-generated
+# ============================================================
 *.tsbuildinfo
 next-env.d.ts
 
-# Vercel
+# ============================================================
+# Vercel / Netlify
+# ============================================================
 .vercel
+.netlify
 
-# Local temp files
-temp/
+# ============================================================
+# Testing
+# ============================================================
+coverage/
+.nyc_output/
 
+# ============================================================
 # AI assistant configs (other tools / template artifacts)
-.aider.conf.yml
+# ============================================================
+.aider*
 .amazonq/
 .augment/
 .claude/
@@ -55,17 +93,31 @@ temp/
 .windsurf/
 .windsurfrules
 
+# ============================================================
 # Docker (unused — static export deploys to GitHub Pages)
+# ============================================================
 Dockerfile
-Dockerfile.dev
+Dockerfile.*
 docker-compose.yml
+docker-compose.*.yml
 .dockerignore
 
-# Template release artifacts
+# ============================================================
+# Project meta — not consumed by the build
+# ============================================================
+AGENTS.md
 CHANGELOG.md
+CLAUDE.md
 GEMINI.md
+LICENSE
+README.md
+.gitattributes
+.nvmrc
+components.json
 
+# ============================================================
 # Template GitHub config (issue/PR templates, copilot, template CI)
+# ============================================================
 .github/ISSUE_TEMPLATE/
 .github/PULL_REQUEST_TEMPLATE.md
 .github/copilot-instructions.md
@@ -73,11 +125,37 @@ GEMINI.md
 .github/skills/
 .github/workflows/ci.yml
 
-# Template clone-website docs + scripts (clone phase is over)
-docs/design-references/
-docs/research/INSPECTION_GUIDE.md
+# ============================================================
+# Template clone-website docs / scripts
+# ============================================================
+docs/
 scripts/
 
+# ============================================================
+# Dead source files (no active imports — verified via grep)
+# ============================================================
+src/components/SectionHeader.tsx
+src/components/ThrustCard.tsx
+src/components/ui/
+src/lib/utils.ts
+src/data/news.ts
+
+# ============================================================
 # Empty placeholder directories
+# ============================================================
+src/hooks/
+src/types/.gitkeep
 public/videos/
 public/seo/
+public/images/.gitkeep
+
+# ============================================================
+# Unused public assets
+# ============================================================
+public/images/group.png
+
+# ============================================================
+# Local Claude Code state (private to user)
+# ============================================================
+.claude/settings.local.json
+temp/

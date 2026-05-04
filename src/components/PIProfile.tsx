@@ -2,9 +2,7 @@ import Image from "next/image";
 import { pi, affiliations, awards } from "@/data/pi";
 import { Timeline } from "./Timeline";
 
-// Hero / above-the-fold — rendered solid on first paint (no Reveal wrapper).
-// Wrapping in Reveal would cause an opacity-0 flash before hydration since
-// this is the landing card on / and /bilin.
+// Hero / above-the-fold — solid on first paint (no Reveal).
 export function PIProfile() {
   return (
     <article className="surface-card p-6 sm:p-8">
@@ -30,21 +28,21 @@ export function PIProfile() {
           {pi.bio.map((para, i) => (
             <p key={i}>{para}</p>
           ))}
-          <p className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-sm">
-            <a
-              href={`mailto:${pi.email}`}
-              className="link-underline text-[color:var(--color-ink-2)]"
-            >
+          <p
+            className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-sm"
+            style={{ color: "var(--color-ink-2)" }}
+          >
+            <a href={`mailto:${pi.email}`} className="link-underline">
               {pi.email}
             </a>
-            <span aria-hidden="true" className="text-[color:var(--color-ink-3)]">
+            <span aria-hidden="true" style={{ color: "var(--color-ink-3)" }}>
               ·
             </span>
             <a
               href={pi.cvUrl}
               target="_blank"
               rel="noreferrer"
-              className="link-underline text-[color:var(--color-ink-2)]"
+              className="link-underline"
             >
               CV (PDF)
             </a>
