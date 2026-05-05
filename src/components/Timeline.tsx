@@ -8,14 +8,40 @@ type Props = {
 export function Timeline({ heading, rows }: Props) {
   return (
     <section>
-      <h2 className="h2 mb-6">{heading}</h2>
-      <ul className="space-y-4">
+      <h2 className="h2 mb-6 flex items-baseline gap-3">
+        <span>{heading}</span>
+        <span
+          aria-hidden="true"
+          className="font-mono text-xs"
+          style={{ color: "var(--color-ink-4)" }}
+        >
+          [{String(rows.length).padStart(2, "0")}]
+        </span>
+      </h2>
+      <ul
+        className="relative space-y-4 border-l pl-5"
+        style={{ borderColor: "var(--color-rule)" }}
+      >
         {rows.map((row, i) => (
-          <li key={`${row.year}-${i}`} className="flex items-start gap-4">
-            <span className="min-w-[5rem] text-right font-mono text-sm text-[color:var(--color-accent)] sm:min-w-[6rem]">
+          <li
+            key={`${row.year}-${i}`}
+            className="relative grid grid-cols-[6.25rem_1fr] items-start gap-4"
+          >
+            <span
+              aria-hidden="true"
+              className="absolute -left-[1.45rem] top-2 h-1.5 w-1.5 rounded-full"
+              style={{ background: "var(--color-accent)" }}
+            />
+            <span
+              className="pt-px text-right font-mono text-xs"
+              style={{
+                color: "var(--color-ink-3)",
+                fontFeatureSettings: '"tnum" on',
+              }}
+            >
               {row.year}
             </span>
-            <div className="min-w-0 flex-1">
+            <div className="min-w-0">
               <p className="font-medium text-[color:var(--color-ink)]">
                 {row.title}
               </p>

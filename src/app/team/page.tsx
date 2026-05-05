@@ -21,35 +21,44 @@ const piAsPerson: Person = {
 
 export default function TeamPage() {
   return (
-    <div className="container-narrow py-8 lg:py-12">
-      <header className="mb-10 lg:mb-12">
+    <div className="container-narrow py-10 lg:py-16">
+      <header className="mb-12 lg:mb-16">
         <SectionNumber n={4} />
-        <h1 className="section-h2 mt-3">team</h1>
-        <p className="mt-4 max-w-[60ch] text-base text-[color:var(--color-ink-2)]">
+        <h1 className="display mt-5">team</h1>
+        <p className="mt-5 max-w-[60ch] prose-body">
           Built around undergraduate research at Harvey Mudd College, with
           postdoctoral fellows and visiting collaborators.
         </p>
       </header>
 
-      <Reveal>
+      <Reveal variant="up">
         <section>
-          <h2 className="mb-6 font-mono text-xs uppercase tracking-[0.14em] text-[color:var(--color-accent)]">
-            Principal Investigator
-          </h2>
+          <h2 className="eyebrow mb-6">Principal Investigator</h2>
           <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
             <PersonCard person={piAsPerson} />
           </div>
         </section>
+      </Reveal>
 
+      <Reveal variant="up" delay={80}>
         <PeopleGroup title="Postdoctoral Fellows" people={people.postdoc} />
+      </Reveal>
+
+      <Reveal variant="up" delay={160}>
         <PeopleGroup
           title="Current Undergraduates"
           people={people.current}
         />
       </Reveal>
 
-      <Reveal className="mt-12 lg:mt-16">
-        <h2 className="h2 mb-6">Alumni</h2>
+      <Reveal variant="up" delay={80} className="mt-12 lg:mt-16">
+        <h2 className="h2 mb-2">Alumni</h2>
+        <p
+          className="mb-6 small"
+          style={{ color: "var(--color-ink-3)" }}
+        >
+          Where the lab’s past collaborators are now.
+        </p>
         <PeopleGroup
           title="Staff Alumni"
           people={people.alumni.staff}

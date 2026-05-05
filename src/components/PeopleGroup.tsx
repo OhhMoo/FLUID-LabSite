@@ -11,10 +11,20 @@ type Props = {
 export function PeopleGroup({ title, people, compact = false }: Props) {
   if (people.length === 0) return null;
   return (
-    <section className="border-t border-[color:var(--color-rule)] py-10 first:border-t-0 first:pt-0">
-      <h3 className="mb-6 font-mono text-xs uppercase tracking-wide text-[color:var(--color-accent)]">
-        {title}
-      </h3>
+    <section
+      className="border-t py-10 first:border-t-0 first:pt-0"
+      style={{ borderColor: "var(--color-rule)" }}
+    >
+      <div className="mb-6 flex items-baseline justify-between gap-4">
+        <h3 className="eyebrow">{title}</h3>
+        <span
+          aria-hidden="true"
+          className="font-mono text-xs"
+          style={{ color: "var(--color-ink-4)" }}
+        >
+          [{String(people.length).padStart(2, "0")}]
+        </span>
+      </div>
       <div
         className={
           compact

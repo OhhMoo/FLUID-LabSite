@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function BilinPage() {
   return (
-    <div className="container-narrow py-8 lg:py-12">
+    <div className="container-narrow py-10 lg:py-16">
       <PIProfile />
     </div>
   );

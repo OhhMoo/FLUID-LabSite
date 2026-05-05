@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 const routes = [
   { href: "/bilin", label: "bilin" },
@@ -10,32 +11,71 @@ const routes = [
   { href: "/team", label: "team" },
 ];
 
-// trailingSlash: true in next.config means usePathname() returns "/bilin/".
-// Strip trailing slashes so route comparison is robust either way.
 const stripSlash = (p: string) => p.replace(/\/+$/, "") || "/";
 
 export function SiteHeader() {
   const current = stripSlash(usePathname() ?? "/");
+  const [scrolled, setScrolled] = useState(false);
+  const progressRef = useRef<HTMLSpanElement | null>(null);
+  const tickingRef = useRef(false);
+
+  useEffect(() => {
+    const update = () => {
+      tickingRef.current = false;
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      const y = window.scrollY || doc.scrollTop;
+      const p = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+      if (progressRef.current) {
+        progressRef.current.style.setProperty("--p", String(p));
+      }
+      setScrolled(y > 4);
+    };
+
+    const onScroll = () => {
+      if (tickingRef.current) return;
+      tickingRef.current = true;
+      requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
   return (
     <header
-      className="fixed left-0 right-0 top-0 z-40 h-16 border-b border-[color:var(--color-rule)] backdrop-blur-sm"
+      data-scrolled={scrolled}
+      className="site-header fixed left-0 right-0 top-0 z-40 h-16 backdrop-blur-md transition-colors duration-200"
       style={{
-        background: "rgba(255, 255, 255, 0.85)",
-        fontFamily: "var(--font-mono)",
+        background: "var(--header-bg)",
+        borderBottom: "1px solid var(--header-border)",
       }}
     >
       <div className="mx-auto flex h-full max-w-(--container-wide) items-center justify-between gap-3 px-4 sm:px-6">
         <Link
           href="/"
-          className="flex flex-shrink-0 items-center gap-3 rounded-sm text-[color:var(--color-ink)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          className="group flex flex-shrink-0 items-center gap-2.5 rounded-sm text-[color:var(--color-ink)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
         >
-          <span className="font-mono text-base font-medium tracking-tight sm:text-lg">
-            FLUID@hmc
+          <span
+            aria-hidden="true"
+            className="relative h-2 w-2 rounded-full"
+            style={{
+              background: "var(--color-accent)",
+              boxShadow: "0 0 0 4px oklch(54% 0.215 262 / 0.18)",
+            }}
+          />
+          <span className="text-[15px] font-semibold tracking-[-0.02em] sm:text-[16px]">
+            FLUID<span style={{ color: "var(--color-ink-3)", fontWeight: 400 }}>@</span>hmc
           </span>
         </Link>
         <nav
           aria-label="Primary"
-          className="flex min-w-0 flex-wrap items-center justify-end gap-x-3 gap-y-1 sm:gap-x-5"
+          className="flex min-w-0 flex-wrap items-center justify-end gap-x-4 gap-y-1 sm:gap-x-6"
         >
           {routes.map((r) => {
             const isActive =
@@ -45,17 +85,7 @@ export function SiteHeader() {
                 key={r.href}
                 href={r.href}
                 aria-current={isActive ? "page" : undefined}
-                className={
-                  "relative font-mono text-xs transition-colors hover:text-[color:var(--color-accent)] sm:text-sm " +
-                  (isActive
-                    ? "font-medium after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-px after:bg-[color:var(--color-accent)] after:content-['']"
-                    : "")
-                }
-                style={{
-                  color: isActive
-                    ? "var(--color-ink)"
-                    : "var(--color-ink-2)",
-                }}
+                className="nav-link"
               >
                 {r.label}
               </Link>
@@ -63,6 +93,7 @@ export function SiteHeader() {
           })}
         </nav>
       </div>
+      <span ref={progressRef} className="scroll-progress" aria-hidden="true" />
     </header>
   );
 }

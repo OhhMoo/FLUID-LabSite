@@ -9,14 +9,37 @@ export const metadata: Metadata = {
 };
 
 export default function PublicationsPage() {
+  const oldest = publications[publications.length - 1].year;
+  const newest = publications[0].year;
   return (
-    <div className="container-narrow py-8 lg:py-12">
-      <header className="mb-10 lg:mb-12">
+    <div className="container-narrow py-10 lg:py-16">
+      <header className="mb-12 lg:mb-16">
         <SectionNumber n={3} />
-        <h1 className="section-h2 mt-3">publications</h1>
-        <p className="mt-4 small" style={{ color: "var(--color-ink-3)" }}>
-          {publications.length} papers ·{" "}
-          {publications[publications.length - 1].year}–{publications[0].year}
+        <h1 className="display mt-5">publications</h1>
+        <p
+          className="mt-5 flex flex-wrap items-baseline gap-x-2 text-sm"
+          style={{
+            color: "var(--color-ink-3)",
+            letterSpacing: "-0.005em",
+          }}
+        >
+          <span
+            style={{
+              color: "var(--color-ink)",
+              fontWeight: 500,
+              fontFamily: "var(--font-mono)",
+              fontVariantNumeric: "tabular-nums lining-nums",
+            }}
+          >
+            {publications.length}
+          </span>
+          <span>papers</span>
+          <span aria-hidden="true" style={{ color: "var(--color-ink-4)" }}>
+            ·
+          </span>
+          <span style={{ fontFamily: "var(--font-mono)", fontVariantNumeric: "tabular-nums lining-nums" }}>
+            {oldest}–{newest}
+          </span>
         </p>
       </header>
       <PublicationsList publications={publications} />

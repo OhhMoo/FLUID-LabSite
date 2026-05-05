@@ -1,11 +1,15 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode, type ElementType } from "react";
+
+type Variant = "up" | "scale" | "fade";
 
 type Props = {
   children: ReactNode;
   /** Stagger delay in ms applied via the --reveal-delay custom property. */
   delay?: number;
+  /** Visual variant: vertical lift (up), gentle scale, or pure fade. */
+  variant?: Variant;
   /** Optional render-element override; defaults to a block-level div. */
   as?: "div" | "section" | "article" | "li" | "header" | "footer";
   className?: string;
@@ -17,32 +21,51 @@ type Props = {
   rootMargin?: string;
 };
 
+type State = "ssr" | "hidden" | "visible";
+
 export function Reveal({
   children,
   delay = 0,
-  as: Tag = "div",
+  variant = "up",
+  as = "div",
   className,
   id,
   rootMargin = "0px 0px -10% 0px",
 }: Props) {
   const [node, setNode] = useState<HTMLElement | null>(null);
-  const [visible, setVisible] = useState(false);
+  // SSR + first paint: render solid (state === "ssr"). After mount we decide
+  // whether to hide-and-animate or leave alone.
+  const [state, setState] = useState<State>("ssr");
 
   useEffect(() => {
     if (!node) return;
-    if (
+
+    const reducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      setVisible(true);
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reducedMotion) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setState("visible");
       return;
     }
+
+    const rect = node.getBoundingClientRect();
+    const inView = rect.top < window.innerHeight * 0.95 && rect.bottom > 0;
+
+    if (inView) {
+      setState("visible");
+      return;
+    }
+
+    setState("hidden");
+
     const obs = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            setVisible(true);
+            setState("visible");
             obs.disconnect();
             break;
           }
@@ -54,19 +77,33 @@ export function Reveal({
     return () => obs.disconnect();
   }, [node, rootMargin]);
 
-  const cls = ["reveal", visible ? "is-visible" : "", className]
-    .filter(Boolean)
-    .join(" ");
+  // SSR: no .reveal class — element is fully visible on first paint.
+  // Hidden: .reveal (opacity 0).
+  // Visible: .reveal.is-visible (transitions to opacity 1).
+  const revealClass =
+    state === "ssr"
+      ? ""
+      : state === "visible"
+        ? "reveal is-visible"
+        : "reveal";
+
+  const cls = [revealClass, className].filter(Boolean).join(" ") || undefined;
+
   const style =
-    delay > 0
+    delay > 0 && state !== "ssr"
       ? ({ "--reveal-delay": `${delay}ms` } as React.CSSProperties)
       : undefined;
 
-  const setRef = (el: HTMLElement | null) => setNode(el);
+  const Tag = as as ElementType;
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    <Tag ref={setRef as any} id={id} className={cls} style={style}>
+    <Tag
+      ref={(el: HTMLElement | null) => setNode(el)}
+      id={id}
+      data-variant={state === "ssr" ? undefined : variant}
+      className={cls}
+      style={style}
+    >
       {children}
     </Tag>
   );

@@ -15,6 +15,12 @@ export function PublicationsList({ publications }: Props) {
     [publications],
   );
 
+  const countByYear = useMemo(() => {
+    const m = new Map<number, number>();
+    for (const p of publications) m.set(p.year, (m.get(p.year) ?? 0) + 1);
+    return m;
+  }, [publications]);
+
   const [activeYear, setActiveYear] = useState<number | null>(null);
 
   const filtered = useMemo(
@@ -27,12 +33,13 @@ export function PublicationsList({ publications }: Props) {
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap gap-2">
+      <div className="mb-8 flex flex-wrap gap-2">
         <FilterChip
           active={activeYear === null}
           onClick={() => setActiveYear(null)}
         >
           all
+          <span className="chip-count">{publications.length}</span>
         </FilterChip>
         {years.map((y) => (
           <FilterChip
@@ -41,6 +48,7 @@ export function PublicationsList({ publications }: Props) {
             onClick={() => setActiveYear(y)}
           >
             {y}
+            <span className="chip-count">{countByYear.get(y)}</span>
           </FilterChip>
         ))}
       </div>
@@ -61,7 +69,11 @@ export function PublicationsList({ publications }: Props) {
           .
         </p>
       ) : (
-        <ol className="list-none">
+        <ol
+          key={activeYear ?? "all"}
+          className="list-none border-t"
+          style={{ borderColor: "var(--color-rule)" }}
+        >
           {filtered.map((p) => (
             <li key={p.id}>
               <PublicationItem publication={p} />
@@ -87,12 +99,8 @@ function FilterChip({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={
-        "rounded-full border px-3 py-1 font-mono text-xs transition-colors " +
-        (active
-          ? "border-[color:var(--color-accent)] bg-[color:var(--color-accent)] text-black"
-          : "border-[color:var(--color-rule)] text-[color:var(--color-ink-2)] hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)]")
-      }
+      data-active={active ? "true" : "false"}
+      className="chip"
     >
       {children}
     </button>
