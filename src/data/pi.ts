@@ -1,4 +1,4 @@
-import type { PI, TimelineRow } from "@/types/content";
+import type { PI, EducationRow, TimelineRow } from "@/types/content";
 import { asset } from "@/lib/asset";
 
 export const pi: PI = {
@@ -18,7 +18,26 @@ export const pi: PI = {
   portrait: asset("/images/bilin.jpg"),
 };
 
-export const affiliations: TimelineRow[] = [
+export const education: EducationRow[] = [
+  {
+    year: "2010–2016",
+    title: "Ph.D. in Chemistry",
+    org: "California Institute of Technology, Pasadena, CA, USA",
+    dissertation:
+      "Dipolar Liquids and Their Mixtures: Equilibrium and Nonequilibrium Properties with Field-Theoretic Approaches",
+    advisor: "Prof. Zhen-Gang Wang",
+  },
+  {
+    year: "2006–2009",
+    title: "B.A. in Physics and Chemistry",
+    org: "Wellesley College, Wellesley, MA, USA",
+    dissertation:
+      "Thermodynamics of Ising Systems of the Triangular Kagome Lattice and Small-Model Approximations to Geometrically Frustrated Systems",
+    advisor: "Prof. Courtney Lannert",
+  },
+];
+
+export const appointments: TimelineRow[] = [
   {
     year: "2023–",
     title: "Assistant Professor of Chemistry",
@@ -34,17 +53,10 @@ export const affiliations: TimelineRow[] = [
     title: "Scientist (joint appointment from 2020)",
     org: "Institute of High Performance Computing, A*STAR, Singapore",
   },
-  {
-    year: "2010–2016",
-    title: "Ph.D. in Chemistry",
-    org: "California Institute of Technology — advisor: Prof. Zhen-Gang Wang",
-  },
-  {
-    year: "2006–2009",
-    title: "B.A. in Physics and Chemistry",
-    org: "Wellesley College, Massachusetts, USA",
-  },
 ];
+
+/** Kept as the flat union of education + appointments for callers that want one list. */
+export const affiliations: TimelineRow[] = [...appointments, ...education];
 
 export const awards: TimelineRow[] = [
   {
@@ -60,12 +72,14 @@ export const awards: TimelineRow[] = [
   {
     year: "2020",
     title: "AME Young Individual Research Grant",
-    org: "A*STAR, Singapore (Role: PI)",
+    org: "A*STAR, Singapore",
+    note: "Role: PI",
   },
   {
     year: "2018",
     title: "SERC Career Development Award",
-    org: "Science and Engineering Research Council, A*STAR (Role: PI)",
+    org: "Science and Engineering Research Council, A*STAR",
+    note: "Role: PI",
   },
   {
     year: "2009",
@@ -83,8 +97,18 @@ export const awards: TimelineRow[] = [
     org: "Wellesley College",
   },
   {
+    year: "2008",
+    title: "Jerome A. Schiff Fellowship",
+    org: "Wellesley College",
+  },
+  {
     year: "2006",
     title: "National Science Scholarship (BS–PhD)",
     org: "A*STAR, Singapore",
+  },
+  {
+    year: "2006",
+    title: "Institute of Physics Singapore Gold Medal",
+    org: "Institute of Physics, Singapore",
   },
 ];

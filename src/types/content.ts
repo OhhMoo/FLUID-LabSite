@@ -16,6 +16,12 @@ export type TimelineRow = {
   note?: string;
 };
 
+/** An EDUCATION entry. Carries the two fields a CV records and an appointment doesn't. */
+export type EducationRow = TimelineRow & {
+  dissertation?: string;
+  advisor?: string;
+};
+
 export type Thrust = {
   slug: string;
   title: string;
@@ -37,6 +43,34 @@ export type Publication = {
   doi: string;
   preprintUrl?: string;
   pdfUrl?: string;
+  note?: string;
+};
+
+/** A conference or seminar talk. `invited` mirrors the CV's "(invited talk)" marker. */
+export type Talk = {
+  id: string;
+  title: string;
+  invited: boolean;
+  venue: string;
+  location: string;
+  year: number;
+};
+
+/** A course taught. `terms` stays prose because the CV writes it that way. */
+export type Course = {
+  id: string;
+  title: string;
+  terms: string;
+  institution: string;
+  note?: string;
+};
+
+/** A supervised senior thesis. */
+export type Thesis = {
+  id: string;
+  student: string;
+  year: number;
+  title: string;
   note?: string;
 };
 

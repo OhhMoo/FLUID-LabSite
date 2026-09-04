@@ -159,3 +159,6 @@ public/images/group.png
 # ============================================================
 .claude/settings.local.json
 temp/
+
+# cv-tool build/test dependencies (the built HTML has none)
+cv-tool/node_modules/

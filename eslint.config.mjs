@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // cv-tool is a standalone offline tool with its own conventions
+    // (ES5 for the inlined bundle, CommonJS for the Node tests) and
+    // vendored minified libraries. It is not part of the Next app.
+    "cv-tool/**",
   ]),
 ]);
 
