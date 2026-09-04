@@ -60,6 +60,7 @@ export const people: People = {
       name: "Silas Brock",
       role: "Undergraduate Researcher",
       classYear: "HMC '28",
+      linkedIn: "https://www.linkedin.com/in/silas-brock-553b21397/",
     },
     {
       slug: "erika-drisko",
@@ -73,6 +74,7 @@ export const people: People = {
       name: "Michael Yao",
       role: "Undergraduate Researcher",
       classYear: "HMC '29",
+      linkedIn: "https://www.linkedin.com/in/yiqi-yao-michael/",
     },
   ],
   alumni: {
