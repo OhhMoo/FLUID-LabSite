@@ -60,7 +60,7 @@ body {
   background: var(--color-bg);
   color: var(--color-ink-2);
   font-family: var(--font-sans);
-  font-size: 1rem;
+  font-size: 0.9375rem;
   line-height: 1.55;
   letter-spacing: -0.005em;
   -webkit-font-smoothing: antialiased;
@@ -86,7 +86,7 @@ a.link-underline {
   background-position: 0 100%;
   padding-bottom: 2px;
   border-bottom: 1px solid var(--color-rule-2);
-  transition: background-size 220ms var(--ease-out), color 160ms ease;
+  transition: background-size 220ms var(--ease-out), color var(--dur-fast) ease;
 }
 
 a.link-underline:hover,
@@ -117,11 +117,22 @@ svg {
    PAGE BACKDROP —soft tinted wash with very faint mesh
 ============================================================ */
 .page-backdrop {
+  /* vertical slack so the scroll-parallax translate never exposes an edge;
+     --scroll-parallax is set on <html> by the header's rAF scroll listener */
   position: fixed;
-  inset: 0;
+  inset: -72px 0;
   z-index: 0;
   pointer-events: none;
   background: var(--color-bg-2);
+  transform: translate3d(0, var(--scroll-parallax, 0px), 0);
+}
+
+.page-backdrop::before {
+  /* gradient washes on their own layer so the slow drift (transform)
+     never conflicts with the parallax translate on the parent */
+  content: "";
+  position: absolute;
+  inset: -4%;
   background-image:
     radial-gradient(
       900px 500px at 12% -8%,
@@ -138,6 +149,17 @@ svg {
       oklch(68% 0.155 254 / 0.05),
       transparent 60%
     );
+  animation: backdrop-drift calc(var(--dur-ambient) * 2.4) ease-in-out infinite
+    alternate;
+}
+
+@keyframes backdrop-drift {
+  0% {
+    transform: translate3d(-1.5%, -1%, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(1.5%, 1%, 0) scale(1.03);
+  }
 }
 
 .page-backdrop::after {
@@ -252,6 +274,8 @@ main {
   align-items: center;
   gap: 0.65rem;
   font-weight: 500;
+  /* numeral "sets" faster than body content — structure precedes content */
+  animation: numeral-set 300ms var(--ease-out) both;
 }
 
 .section-number::after {
@@ -259,12 +283,34 @@ main {
   height: 1px;
   width: 2.5rem;
   background: var(--color-rule-2);
+  transform-origin: 0 50%;
+  animation: rule-draw var(--dur-med) var(--ease-out) 100ms both;
+}
+
+@keyframes numeral-set {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 4px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes rule-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
 .display-2xl {
   font-family: var(--font-sans);
-  font-size: clamp(2.75rem, 7vw, 5rem);
-  line-height: 0.96;
+  font-size: clamp(1.875rem, 4.2vw, 3rem);
+  line-height: 1.02;
   letter-spacing: -0.04em;
   font-weight: 600;
   color: var(--color-ink);
@@ -272,8 +318,8 @@ main {
 
 .display-xl {
   font-family: var(--font-sans);
-  font-size: clamp(2.25rem, 5.5vw, 3.75rem);
-  line-height: 1;
+  font-size: clamp(1.625rem, 3.4vw, 2.375rem);
+  line-height: 1.06;
   letter-spacing: -0.035em;
   font-weight: 600;
   color: var(--color-ink);
@@ -281,8 +327,8 @@ main {
 
 .display {
   font-family: var(--font-sans);
-  font-size: clamp(1.875rem, 4vw, 2.75rem);
-  line-height: 1.04;
+  font-size: clamp(1.375rem, 2.6vw, 1.875rem);
+  line-height: 1.12;
   letter-spacing: -0.03em;
   font-weight: 600;
   color: var(--color-ink);
@@ -290,8 +336,8 @@ main {
 
 .section-h2 {
   font-family: var(--font-sans);
-  font-size: clamp(1.875rem, 4vw, 2.75rem);
-  line-height: 1.04;
+  font-size: clamp(1.375rem, 2.6vw, 1.875rem);
+  line-height: 1.12;
   letter-spacing: -0.03em;
   font-weight: 600;
   color: var(--color-ink);
@@ -299,8 +345,8 @@ main {
 
 .h1 {
   font-family: var(--font-sans);
-  font-size: clamp(1.75rem, 3.6vw, 2.25rem);
-  line-height: 1.1;
+  font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+  line-height: 1.18;
   letter-spacing: -0.024em;
   font-weight: 600;
   color: var(--color-ink);
@@ -308,32 +354,32 @@ main {
 
 .h2 {
   font-family: var(--font-sans);
-  font-size: clamp(1.25rem, 2.2vw, 1.5rem);
-  line-height: 1.2;
-  letter-spacing: -0.018em;
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.3;
+  letter-spacing: -0.012em;
   font-weight: 600;
   color: var(--color-ink);
 }
 
 .h3 {
   font-family: var(--font-sans);
-  font-size: 1rem;
-  line-height: 1.4;
+  font-size: 0.9375rem;
+  line-height: 1.45;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--color-ink);
 }
 
 .small {
-  font-size: 0.875rem;
-  line-height: 1.5;
+  font-size: 0.8125rem;
+  line-height: 1.55;
 }
 
 .prose-body {
   font-family: var(--font-sans);
   color: var(--color-ink-2);
-  font-size: 1rem;
-  line-height: 1.65;
+  font-size: 0.9375rem;
+  line-height: 1.68;
   letter-spacing: -0.005em;
   font-variant-numeric: lining-nums proportional-nums;
 }
@@ -354,10 +400,11 @@ main {
   background-position: 0 100%;
   padding-bottom: 2px;
   border-bottom: 1px solid var(--color-rule-2);
-  transition: background-size 220ms var(--ease-out), color 160ms ease;
+  transition: background-size 220ms var(--ease-out), color var(--dur-fast) ease;
 }
 
-.prose-body a:not(.btn):hover {
+.prose-body a:not(.btn):hover,
+.prose-body a:not(.btn):focus-visible {
   background-size: 100% 1px;
   color: var(--color-accent);
   border-bottom-color: transparent;
@@ -400,6 +447,11 @@ main {
     --ease-out-expo: var(--ease-out);
     --ease-out-quint: var(--ease-out);
     --reveal-distance: 16px;
+    /* duration tokens — the whole site breathes at one tempo */
+    --dur-fast: 160ms; /* hovers */
+    --dur-med: 400ms; /* entrances */
+    --dur-slow: 600ms; /* reveals */
+    --dur-ambient: 20s; /* drifts */
   }
 }
 
@@ -420,14 +472,53 @@ main {
     transform: none;
   }
 
+  .reveal[data-variant="left"] {
+    transform: translate3d(calc(var(--reveal-distance) * -0.75), 0, 0);
+  }
+
+  .reveal[data-variant="right"] {
+    transform: translate3d(calc(var(--reveal-distance) * 0.75), 0, 0);
+  }
+
+  .reveal[data-variant="blur"] {
+    transform: none;
+    filter: blur(6px);
+  }
+
+  /* rule: the element itself is a hairline — draw it left to right */
+  .reveal[data-variant="rule"] {
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+  }
+
   .reveal.is-visible {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
     transition:
-      opacity 600ms var(--ease-out),
-      transform 600ms var(--ease-out);
+      opacity var(--dur-slow) var(--ease-out),
+      transform var(--dur-slow) var(--ease-out),
+      filter var(--dur-slow) var(--ease-out);
     transition-delay: var(--reveal-delay, 0ms);
     will-change: auto;
+  }
+
+  /* Above-the-fold entrance — CSS animation, runs on first paint, no JS.
+     Stagger via the --load-delay custom property (~90ms steps). */
+  .load-in {
+    animation: load-in var(--dur-med) var(--ease-out) both;
+    animation-delay: var(--load-delay, 0ms);
+  }
+
+  @keyframes load-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 10px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
   }
 
   /* Subtle floating-portrait halo */
@@ -449,7 +540,7 @@ main {
       );
     filter: blur(28px);
     transform: translate3d(0, 0, 0);
-    animation: halo-drift 18s ease-in-out infinite alternate;
+    animation: halo-drift var(--dur-ambient) ease-in-out infinite alternate;
   }
 
   @keyframes halo-drift {
@@ -459,6 +550,24 @@ main {
     }
     100% {
       transform: translate3d(2%, -1%, 0) scale(1.04);
+      opacity: 1;
+    }
+  }
+
+  /* Homepage hero radial glow — slow breathing pulse, ±4% */
+  .hero-glow {
+    transform-origin: center;
+    animation: hero-glow-pulse calc(var(--dur-ambient) * 1.2) ease-in-out
+      infinite alternate;
+  }
+
+  @keyframes hero-glow-pulse {
+    0% {
+      transform: scale(0.96);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(1.04);
       opacity: 1;
     }
   }
@@ -478,10 +587,27 @@ main {
     box-shadow 280ms var(--ease-out);
 }
 
+.thrust-card .thrust-thumb img {
+  transition: transform 280ms var(--ease-out);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .thrust-card:hover .thrust-thumb {
     transform: scale(1.03);
   }
+
+  /* depth nudge: the image shifts inside the frame */
+  .thrust-card:hover .thrust-thumb img {
+    transform: translateY(-2px);
+  }
+}
+
+.thrust-card:focus-visible .thrust-thumb {
+  transform: scale(1.03);
+}
+
+.thrust-card:focus-visible .thrust-thumb img {
+  transform: translateY(-2px);
 }
 
 .thrust-card .thrust-numeral {
@@ -501,6 +627,10 @@ main {
   }
 }
 
+.thrust-card:focus-visible .thrust-numeral {
+  color: var(--color-accent);
+}
+
 .thrust-card .thrust-title-underline {
   display: inline;
   background-image: linear-gradient(var(--color-accent), var(--color-accent));
@@ -515,6 +645,51 @@ main {
   .thrust-card:hover .thrust-title-underline {
     background-size: 100% 1px;
   }
+}
+
+.thrust-card:focus-visible .thrust-title-underline {
+  background-size: 100% 1px;
+}
+
+/* ============================================================
+   FIG. 1 GRID — hover caption labels
+============================================================ */
+.fig-caption {
+  position: absolute;
+  left: 0.5rem;
+  bottom: 0.5rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-rule);
+  background: var(--color-surface);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  line-height: 1.4;
+  color: var(--color-ink-3);
+  opacity: 0;
+  transform: translateY(2px);
+  transition:
+    opacity var(--dur-fast) ease,
+    transform var(--dur-fast) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .fig-thumb:hover .fig-caption {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   TIMELINE — rail dots pop in as each row reveals
+============================================================ */
+.reveal > .timeline-dot {
+  transform: scale(0);
+}
+
+.reveal.is-visible > .timeline-dot {
+  transform: scale(1);
+  transition: transform var(--dur-med) cubic-bezier(0.34, 1.56, 0.64, 1) 150ms;
 }
 
 /* ============================================================
@@ -537,10 +712,10 @@ main {
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   transition:
-    color 160ms ease,
-    border-color 160ms ease,
-    background-color 160ms ease,
-    transform 160ms var(--ease-out);
+    color var(--dur-fast) ease,
+    border-color var(--dur-fast) ease,
+    background-color var(--dur-fast) ease,
+    transform var(--dur-fast) var(--ease-out);
   cursor: pointer;
 }
 
@@ -549,6 +724,11 @@ main {
     color: var(--color-ink);
     border-color: var(--color-ink-3);
   }
+}
+
+.chip:focus-visible {
+  color: var(--color-ink);
+  border-color: var(--color-ink-3);
 }
 
 .chip:active {
@@ -565,6 +745,10 @@ main {
   .chip[data-active="true"]:hover {
     color: var(--color-accent-ink);
   }
+}
+
+.chip[data-active="true"]:focus-visible {
+  color: var(--color-accent-ink);
 }
 
 .chip-count {
@@ -628,12 +812,45 @@ main {
   border-bottom: 0;
 }
 
+/* Staggered enter when the filter re-keys the list — --i is set inline
+   per index (capped ~12) so long lists don't lag. */
+.pub-enter {
+  animation: pub-enter var(--dur-med) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 35ms);
+}
+
+@keyframes pub-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Mono index sets in faster than the item body — structure precedes content. */
+.reveal .pub-index {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 4px, 0);
+}
+
+.reveal.is-visible .pub-index {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 300ms var(--ease-out),
+    transform 300ms var(--ease-out);
+}
+
 .pub-item .pub-title {
   background-image: linear-gradient(var(--color-accent), var(--color-accent));
   background-repeat: no-repeat;
   background-size: 0% 1px;
   background-position: 0 100%;
-  transition: background-size 220ms var(--ease-out), color 160ms ease;
+  transition: background-size 220ms var(--ease-out), color var(--dur-fast) ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -641,6 +858,11 @@ main {
     background-size: 100% 1px;
     color: var(--color-accent);
   }
+}
+
+.pub-item .pub-title:focus-visible {
+  background-size: 100% 1px;
+  color: var(--color-accent);
 }
 
 /* ============================================================
@@ -663,6 +885,14 @@ main {
   }
 }
 
+.person-card:focus-within .person-avatar {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px var(--color-rule),
+    0 0 0 5px oklch(54% 0.215 262 / 0.08),
+    0 12px 24px -12px oklch(20% 0.03 260 / 0.18);
+}
+
 .person-card .person-name {
   background-image: linear-gradient(var(--color-accent), var(--color-accent));
   background-repeat: no-repeat;
@@ -676,6 +906,10 @@ main {
   .person-card:hover .person-name {
     background-size: 100% 1px;
   }
+}
+
+.person-card:focus-within .person-name {
+  background-size: 100% 1px;
 }
 
 /* ============================================================
@@ -714,10 +948,11 @@ main {
   font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--color-ink-3);
-  transition: color 160ms ease;
+  transition: color var(--dur-fast) ease;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link:focus-visible {
   color: var(--color-ink);
 }
 
@@ -739,7 +974,8 @@ main {
 }
 
 .nav-link[aria-current="page"]::after,
-.nav-link:hover::after {
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
   transform: scaleX(1);
 }
 
@@ -760,16 +996,20 @@ main {
   background: var(--color-surface);
   color: var(--color-ink);
   transition:
-    border-color 160ms ease,
-    background-color 160ms ease,
-    color 160ms ease,
-    transform 160ms var(--ease-out);
+    border-color var(--dur-fast) ease,
+    background-color var(--dur-fast) ease,
+    color var(--dur-fast) ease,
+    transform var(--dur-fast) var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .btn:hover {
     border-color: var(--color-ink);
   }
+}
+
+.btn:focus-visible {
+  border-color: var(--color-ink);
 }
 
 .btn:active {
@@ -789,24 +1029,74 @@ main {
   }
 }
 
+.btn-primary:focus-visible {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* 150ms arrow nudge on the primary button's → */
+.btn-arrow {
+  display: inline-block;
+  transition: transform 150ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover .btn-arrow {
+    transform: translateX(2px);
+  }
+}
+
+.btn:focus-visible .btn-arrow {
+  transform: translateX(2px);
+}
+
 /* ============================================================
    REDUCED MOTION
 ============================================================ */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .reveal,
   .reveal.is-visible {
     opacity: 1;
     transform: none;
+    filter: none;
     clip-path: none;
     animation: none;
     transition: none;
   }
 
-  .halo::before {
+  .reveal .pub-index,
+  .reveal.is-visible .pub-index {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .reveal > .timeline-dot,
+  .reveal.is-visible > .timeline-dot {
+    transform: none;
+    transition: none;
+  }
+
+  .load-in,
+  .pub-enter,
+  .hero-glow,
+  .section-number,
+  .section-number::after,
+  .halo::before,
+  .page-backdrop::before {
     animation: none;
   }
 
+  .page-backdrop {
+    transform: none;
+  }
+
   .thrust-card .thrust-thumb,
+  .thrust-card .thrust-thumb img,
   .thrust-card .thrust-title-underline,
   .pub-item,
   .pub-item::before,
@@ -814,6 +1104,8 @@ main {
   .person-card .person-avatar,
   .person-card .person-name,
   .nav-link::after,
+  .fig-caption,
+  .btn-arrow,
   a.link-underline,
   .prose-body a:not(.btn) {
     transition: none;
@@ -821,8 +1113,14 @@ main {
   }
 
   .thrust-card:hover .thrust-thumb,
+  .thrust-card:focus-visible .thrust-thumb,
+  .thrust-card:hover .thrust-thumb img,
+  .thrust-card:focus-visible .thrust-thumb img,
+  .btn:hover .btn-arrow,
+  .btn:focus-visible .btn-arrow,
   .pub-item:hover,
-  .person-card:hover .person-avatar {
+  .person-card:hover .person-avatar,
+  .person-card:focus-within .person-avatar {
     transform: none;
   }
 }

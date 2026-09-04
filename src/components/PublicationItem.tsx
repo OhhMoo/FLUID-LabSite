@@ -44,7 +44,7 @@ export function PublicationItem({ publication }: Props) {
           href={doiUrl}
           target="_blank"
           rel="noreferrer"
-          className="text-xs font-medium tracking-[-0.005em] transition-colors hover:text-[color:var(--color-accent)]"
+          className="text-xs font-medium tracking-[-0.005em] transition-colors hover:text-[color:var(--color-accent)] focus-visible:text-[color:var(--color-accent)]"
           style={{ color: "var(--color-ink-3)" }}
         >
           DOI <span aria-hidden="true">→</span>
@@ -54,7 +54,7 @@ export function PublicationItem({ publication }: Props) {
             href={preprintUrl}
             target="_blank"
             rel="noreferrer"
-            className="text-xs font-medium tracking-[-0.005em] transition-colors hover:text-[color:var(--color-accent)]"
+            className="text-xs font-medium tracking-[-0.005em] transition-colors hover:text-[color:var(--color-accent)] focus-visible:text-[color:var(--color-accent)]"
             style={{ color: "var(--color-ink-3)" }}
           >
             Preprint <span aria-hidden="true">→</span>
@@ -65,7 +65,7 @@ export function PublicationItem({ publication }: Props) {
             href={pdfUrl}
             target="_blank"
             rel="noreferrer"
-            className="text-xs font-medium tracking-[-0.005em] transition-colors hover:text-[color:var(--color-accent)]"
+            className="text-xs font-medium tracking-[-0.005em] transition-colors hover:text-[color:var(--color-accent)] focus-visible:text-[color:var(--color-accent)]"
             style={{ color: "var(--color-ink-3)" }}
           >
             PDF <span aria-hidden="true">→</span>

@@ -29,6 +29,11 @@ export function SiteHeader() {
       if (progressRef.current) {
         progressRef.current.style.setProperty("--p", String(p));
       }
+      // whisper of backdrop parallax (capped — see .page-backdrop slack)
+      doc.style.setProperty(
+        "--scroll-parallax",
+        `${Math.min(y * 0.03, 60).toFixed(1)}px`,
+      );
       setScrolled(y > 4);
     };
 
@@ -70,7 +75,7 @@ export function SiteHeader() {
             }}
           />
           <span className="text-[15px] font-semibold tracking-[-0.02em] sm:text-[16px]">
-            FLUID<span style={{ color: "var(--color-ink-3)", fontWeight: 400 }}>@</span>hmc
+            FLUID<span style={{ color: "var(--color-ink-3)", fontWeight: 400 }}>@</span>HMC
           </span>
         </Link>
         <nav

@@ -74,8 +74,12 @@ export function PublicationsList({ publications }: Props) {
           className="list-none border-t"
           style={{ borderColor: "var(--color-rule)" }}
         >
-          {filtered.map((p) => (
-            <li key={p.id}>
+          {filtered.map((p, i) => (
+            <li
+              key={p.id}
+              className="pub-enter"
+              style={{ "--i": Math.min(i, 12) } as React.CSSProperties}
+            >
               <PublicationItem publication={p} />
             </li>
           ))}

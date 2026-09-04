@@ -14,7 +14,7 @@ export default function PublicationsPage() {
   return (
     <div className="container-narrow py-10 lg:py-16">
       <header className="mb-12 lg:mb-16">
-        <SectionNumber n={3} />
+        <SectionNumber n={2} />
         <h1 className="display mt-5">publications</h1>
         <p
           className="mt-5 flex flex-wrap items-baseline gap-x-2 text-sm"

@@ -76,7 +76,7 @@ export function PersonCard({ person, compact = false }: Props) {
             target="_blank"
             rel="noreferrer"
             aria-label={`${name} on LinkedIn`}
-            className="mt-2 inline-flex items-center gap-1.5 small transition-colors hover:text-[color:var(--color-accent)]"
+            className="mt-2 inline-flex items-center gap-1.5 small transition-colors hover:text-[color:var(--color-accent)] focus-visible:text-[color:var(--color-accent)]"
             style={{ color: "var(--color-ink-3)" }}
           >
             <LinkedinIcon size={13} />

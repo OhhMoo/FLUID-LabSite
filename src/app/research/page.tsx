@@ -15,7 +15,7 @@ export default function ResearchPage() {
   return (
     <div className="container-narrow py-10 lg:py-16">
       <header className="mb-14 lg:mb-20">
-        <SectionNumber n={2} />
+        <SectionNumber n={1} />
         <h1 className="display mt-5">research</h1>
         <p className="mt-5 max-w-[58ch] prose-body">
           Four ongoing thrusts at the intersection of statistical thermodynamics

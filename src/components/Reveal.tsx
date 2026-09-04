@@ -1,14 +1,23 @@
 "use client";
 
-import { useEffect, useState, type ReactNode, type ElementType } from "react";
+import {
+  Children,
+  cloneElement,
+  isValidElement,
+  useEffect,
+  useState,
+  type ReactNode,
+  type ElementType,
+} from "react";
 
-type Variant = "up" | "scale" | "fade";
+type Variant = "up" | "scale" | "fade" | "left" | "right" | "blur" | "rule";
 
 type Props = {
   children: ReactNode;
   /** Stagger delay in ms applied via the --reveal-delay custom property. */
   delay?: number;
-  /** Visual variant: vertical lift (up), gentle scale, or pure fade. */
+  /** Visual variant: vertical lift (up), gentle scale, pure fade,
+      horizontal slide (left/right), blur-to-sharp, or a scaleX rule draw. */
   variant?: Variant;
   /** Optional render-element override; defaults to a block-level div. */
   as?: "div" | "section" | "article" | "li" | "header" | "footer";
@@ -106,5 +115,34 @@ export function Reveal({
     >
       {children}
     </Tag>
+  );
+}
+
+type GroupProps = {
+  children: ReactNode;
+  /** Stagger step in ms between children. */
+  stagger?: number;
+  /** Base delay in ms before the first child. */
+  delay?: number;
+};
+
+/**
+ * Stagger wrapper: injects `delay` into each Reveal child that doesn't
+ * already set one, so the child writes its own `--reveal-delay` custom
+ * property. Renders no wrapper element — grid/flex layouts are unaffected.
+ */
+export function RevealGroup({ children, stagger = 80, delay = 0 }: GroupProps) {
+  return (
+    <>
+      {Children.map(children, (child, i) => {
+        if (!isValidElement(child)) return child;
+        if ((child.props as { delay?: number }).delay !== undefined) {
+          return child;
+        }
+        return cloneElement(child, {
+          delay: delay + i * stagger,
+        } as Partial<{ delay: number }>);
+      })}
+    </>
   );
 }

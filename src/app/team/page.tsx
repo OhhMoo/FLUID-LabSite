@@ -23,7 +23,7 @@ export default function TeamPage() {
   return (
     <div className="container-narrow py-10 lg:py-16">
       <header className="mb-12 lg:mb-16">
-        <SectionNumber n={4} />
+        <SectionNumber n={3} />
         <h1 className="display mt-5">team</h1>
         <p className="mt-5 max-w-[60ch] prose-body">
           Built around undergraduate research at Harvey Mudd College, with
