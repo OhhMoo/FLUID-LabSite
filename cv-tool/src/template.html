@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Update the website from a CV</title>
+<style>
+  :root {
+    --line:#e3e6ea; --ink:#14161a; --ink-2:#3a4048; --muted:#6b727c;
+    --accent:#1b5cd6; --ok:#0f7a3d; --warn:#b3261e; --bg:#f6f7f9;
+    --add:#0f7a3d; --add-bg:#eef7f1; --chg:#8a5a00; --chg-bg:#fdf6e8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    margin:0; background:var(--bg); color:var(--ink-2); font-size:14px; line-height:1.5;
+  }
+  header { background:#fff; border-bottom:1px solid var(--line); padding:16px 24px; }
+  header h1 { font-size:17px; margin:0; color:var(--ink); }
+  header p { margin:5px 0 0; font-size:12px; color:var(--muted); max-width:78ch; }
+  main { max-width:1000px; margin:0 auto; padding:20px 24px 96px; }
+  section { background:#fff; border:1px solid var(--line); border-radius:8px; padding:16px 20px; margin-bottom:16px; }
+  section h2 { font-size:14px; margin:0 0 12px; color:var(--ink); display:flex; align-items:center; gap:8px; }
+  .step { display:inline-flex; width:21px; height:21px; align-items:center; justify-content:center;
+    background:var(--ink); color:#fff; border-radius:50%; font-size:11px; flex:0 0 auto; }
+  .drop { border:2px dashed var(--line); border-radius:8px; padding:22px; text-align:center;
+    color:var(--muted); cursor:pointer; transition:border-color .15s, color .15s; }
+  .drop:hover, .drop.over { border-color:var(--accent); color:var(--accent); }
+  .drop .fname { color:var(--ok); font-weight:600; }
+  .btn { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border:1px solid var(--ink);
+    border-radius:6px; font-size:13px; font-family:inherit; cursor:pointer; background:var(--ink); color:#fff; }
+  .btn[disabled] { background:#b9bec5; border-color:#b9bec5; cursor:not-allowed; }
+  .btn.secondary { background:#fff; color:var(--ink); }
+  .msg { font-size:12.5px; margin-top:10px; }
+  .msg.err { color:var(--warn); } .msg.ok { color:var(--ok); }
+  .small { font-size:12px; color:var(--muted); }
+  .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .tally { display:flex; gap:14px; flex-wrap:wrap; font-size:12.5px; margin-bottom:4px; }
+  .tally b { color:var(--ink); font-variant-numeric:tabular-nums; }
+  .grp { border:1px solid var(--line); border-radius:8px; margin-bottom:10px; overflow:hidden; }
+  .grp > summary { cursor:pointer; padding:10px 14px; background:#fbfcfd; font-size:13px; color:var(--ink);
+    display:flex; gap:10px; align-items:center; list-style:none; }
+  .grp > summary::-webkit-details-marker { display:none; }
+  .grp > summary::before { content:"▸"; color:var(--muted); }
+  .grp[open] > summary::before { content:"▾"; }
+  .grp .body { padding:6px 14px 14px; }
+  .pill { font-size:11px; padding:1px 7px; border-radius:10px; border:1px solid var(--line); color:var(--muted); }
+  .pill.add { color:var(--add); background:var(--add-bg); border-color:#cfe6d8; }
+  .pill.chg { color:var(--chg); background:var(--chg-bg); border-color:#eedcb4; }
+  .entry { border-top:1px solid var(--line); padding:10px 0; }
+  .entry:first-child { border-top:0; }
+  .entry .title { color:var(--ink); font-weight:600; font-size:13px; }
+  .field { display:grid; grid-template-columns:20px 96px 1fr; gap:8px; align-items:start;
+    margin-top:6px; font-size:12.5px; }
+  .field .name { color:var(--muted); font-family:ui-monospace, Menlo, Consolas, monospace; font-size:11.5px; padding-top:1px; }
+  .field .vals { min-width:0; }
+  .field .was { color:var(--muted); text-decoration:line-through; }
+  .field .now { color:var(--ink); }
+  .field .soft-note { color:var(--muted); font-size:11.5px; }
+  label.choice { display:inline-flex; gap:6px; align-items:center; cursor:pointer; margin-right:14px; font-size:12.5px; }
+  .files { display:grid; gap:10px; }
+  .file { border:1px solid var(--line); border-radius:6px; padding:10px 12px; }
+  .file .path { font-family:ui-monospace, Menlo, Consolas, monospace; font-size:12px; color:var(--ink); }
+  .sticky { position:sticky; bottom:0; background:#fff; border-top:1px solid var(--line);
+    padding:12px 24px; display:flex; gap:12px; align-items:center; justify-content:space-between; }
+  code { font-family:ui-monospace, Menlo, Consolas, monospace; font-size:12px; background:#f1f3f5;
+    padding:1px 5px; border-radius:3px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Update the website from a CV</h1>
+  <p>
+    Reads a CV, compares it with what the site already publishes, and writes the
+    differences you approve into the site&rsquo;s data files. Everything happens in this
+    browser &mdash; nothing is uploaded, and your CV never leaves the computer.
+    The original files are not modified; you download new copies.
+  </p>
+</header>
+
+<main>
+  <section>
+    <h2><span class="step">1</span>Choose the CV</h2>
+    <div class="drop" id="dropCv">
+      Click or drop <b>BZCV&hellip;.docx</b> or <b>&hellip;.pdf</b> here
+      <input type="file" id="fileCv" accept=".docx,.pdf" hidden>
+    </div>
+    <p class="small" style="margin:8px 0 0">
+      A Word <code>.docx</code> reads more accurately than a PDF, because Word keeps the
+      real headings, bold and italic, and link addresses. Use the PDF only if that is all
+      you have.
+    </p>
+    <div class="msg" id="msgCv"></div>
+  </section>
+
+  <section id="secReview" style="display:none">
+    <h2><span class="step">2</span>Review the differences</h2>
+    <div class="tally" id="tally"></div>
+    <p class="small" id="reviewNote"></p>
+    <div id="review"></div>
+  </section>
+
+  <section id="secExport" style="display:none">
+    <h2><span class="step">3</span>Download the updated data files</h2>
+    <div class="files" id="files"></div>
+    <div class="msg" id="msgExport"></div>
+  </section>
+
+  <section>
+    <h2>What this tool is comparing against</h2>
+    <p class="small" id="snapshot"></p>
+    <details>
+      <summary class="small" style="cursor:pointer">Use different data files</summary>
+      <p class="small" style="margin:8px 0">
+        The site&rsquo;s current data is built into this page. If the website has changed since
+        this tool was built, drop the current <code>src/data/*.ts</code> files here so the
+        comparison uses them instead.
+      </p>
+      <div class="drop" id="dropData" style="padding:14px">
+        Click or drop <code>pi.ts</code>, <code>publications.ts</code>, <code>talks.ts</code>,
+        <code>courses.ts</code>, <code>theses.ts</code>
+        <input type="file" id="fileData" accept=".ts" multiple hidden>
+      </div>
+      <div class="msg" id="msgData"></div>
+    </details>
+  </section>
+</main>
+
+<div class="sticky">
+  <span class="small" id="footNote">All processing is local. No data is uploaded.</span>
+  <button class="btn" id="btnBuild" disabled>Prepare the updated files</button>
+</div>
+
+<!--VENDOR_JSZIP-->
+<!--VENDOR_PDFJS-->
+<!--PDF_WORKER-->
+<!--SITE_DATA-->
+<!--CORE_JS-->
+<!--UI_JS-->
+</body>
+</html>
