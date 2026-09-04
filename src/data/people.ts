@@ -11,26 +11,6 @@ export const people: People = {
   ],
   current: [
     {
-      slug: "ananya-venkatachalam",
-      name: "Ananya Venkatachalam",
-      role: "Undergraduate Researcher",
-      classYear: "HMC '26",
-      linkedIn: "https://www.linkedin.com/in/ananyavenkatachalam2468/",
-    },
-    {
-      slug: "lilo-ryan",
-      name: "Lilo Ryan",
-      role: "Undergraduate Researcher",
-      classYear: "HMC '26",
-      linkedIn: "https://www.linkedin.com/in/liselotte-ryan/",
-    },
-    {
-      slug: "diya-sanghi",
-      name: "Diya Sanghi",
-      role: "Undergraduate Researcher",
-      classYear: "HMC '27",
-    },
-    {
       slug: "zoe-he",
       name: "Zoe He",
       role: "Undergraduate Researcher",
@@ -41,6 +21,7 @@ export const people: People = {
       name: "Selina Yao",
       role: "Undergraduate Researcher",
       classYear: "HMC '27",
+      linkedIn: "https://www.linkedin.com/in/selina-yao-2336ba2b4/",
     },
     {
       slug: "hua-yuan",
@@ -99,6 +80,26 @@ export const people: People = {
       },
     ],
     undergrad: [
+      {
+        slug: "ananya-venkatachalam",
+        name: "Ananya Venkatachalam",
+        role: "Undergraduate Alum",
+        classYear: "HMC '26",
+        linkedIn: "https://www.linkedin.com/in/ananyavenkatachalam2468/",
+      },
+      {
+        slug: "lilo-ryan",
+        name: "Lilo Ryan",
+        role: "Undergraduate Alum",
+        classYear: "HMC '26",
+        linkedIn: "https://www.linkedin.com/in/liselotte-ryan/",
+      },
+      {
+        slug: "diya-sanghi",
+        name: "Diya Sanghi",
+        role: "Undergraduate Alum",
+        classYear: "HMC '27",
+      },
       {
         slug: "caroline-sorrells",
         name: "Caroline Sorrells",
